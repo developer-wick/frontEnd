@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  dirUrl : 'http://localhost:8080/ARsLog/api/'
+  //dirUrl : 'http://localhost:8080/ARsLog/api/',
+  dirUrl : 'https://orca-app-kl4t4.ondigitalocean.app/api/'
 };
 
 /*

@@ -15,28 +15,35 @@ export class LoginComponent implements OnInit {
 
   formulario: FormGroup;
   user = {
-    usuario:'',
-    password:''
+    usuario: '',
+    password: ''
   }
+  
 
   constructor(
-    private authService : AuthService,
+    private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
   }
-  
-  login () {
-    /*
-    this.authService.login(this.user)
-    .subscribe (
-      res => {console.log('RESPUESTA DE API -> '+JSON.stringify(res));},
-      err => {console.log('ERROR DE API -> '+JSON.stringify(err))}
-    );*/
+
+  login() {
     
-      if (this.user.usuario.trim() === '') {Swal.fire({
+    this.authService.login(this.user)
+      .subscribe(
+        res => {
+          console.log('RESPUESTA DE API -> ' + JSON.stringify(res));
+          //console.log('tk -> ' + res.tk);
+          //console.log('tk -> ' + res.usr);
+          this.respuesta(res);
+        },
+        err => { console.log('ERROR DE API -> ' + JSON.stringify(err)) }
+      );
+    
+    if (this.user.usuario.trim() === '') {
+      Swal.fire({
         title: "Debe ingresar un nombre de usuario",
         icon: "warning",
         showConfirmButton: false,
@@ -55,10 +62,47 @@ export class LoginComponent implements OnInit {
             animate__faster
           `
         }
-      });}
-    localStorage.setItem('token',this.user.usuario.trim());
-    this.router.navigate(['/principal']);
+      });
+    }
+    //localStorage.setItem('token', this.user.usuario.trim());
+    //this.router.navigate(['/principal']);
     //Swal.fire('Bienvenido! ');
   }
-  
+
+  respuesta(res){
+    //console.log('Token -> '+res.tk);
+    console.log('Codigo -> '+res.usr);
+    console.log('Mensaje -> '+res.msg);
+    if (res.usr === 1) {
+      localStorage.setItem('token', res.tk);
+      this.router.navigate(['/principal']);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: res.msg,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } else {
+      Swal.fire({
+        title: res.msg,
+        icon: "warning",
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `
+        }
+      });
+    }
+  }
+
 }

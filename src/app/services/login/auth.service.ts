@@ -18,7 +18,7 @@ export class AuthService {
 
   login (user) {
     //return user;
-    return this.http.post<any>(this.pathUrl+'auth', user);
+    return this.http.post<any>(this.pathUrl+'login', user);
   }
 
   autentica () {
