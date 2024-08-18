@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,6 +9,8 @@ import { LoginComponent } from './components/login/login.component';
 import { PrincipalComponent } from './components/principal/principal.component';
 
 import { AuthGuard } from "./guard/login/auth.guard";
+import { TokenInterceptorService } from './services/token/token-interceptor.service';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +26,14 @@ import { AuthGuard } from "./guard/login/auth.guard";
     ReactiveFormsModule
   ],
   providers: [
-    AuthGuard
+    AuthGuard,
+    
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi:true
+    },
+    provideHttpClient(withInterceptorsFromDi())
   ],
   bootstrap: [AppComponent]
 })

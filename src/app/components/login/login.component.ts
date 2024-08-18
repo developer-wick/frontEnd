@@ -30,6 +30,15 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    /*
+    console.log('Login --> ');
+    //localStorage.setItem('tok','PRUEBA');
+    this.authService.loginA(this.user).then(res =>{
+      console.log("REspuesta TOPROMES -> "+JSON.stringify(res));
+      //localStorage.setItem('token');
+      this.respuesta(res);
+    }, err => { console.log('ERROR DE API -> ' + JSON.stringify(err)) });
+    */
     
     this.authService.login(this.user)
       .subscribe(
@@ -37,6 +46,9 @@ export class LoginComponent implements OnInit {
           console.log('RESPUESTA DE API -> ' + JSON.stringify(res));
           //console.log('tk -> ' + res.tk);
           //console.log('tk -> ' + res.usr);
+          localStorage.setItem('token', res.tk);
+          //this.router.navigate(['/principal']);
+          //Swal.fire('Bienvenido! ');
           this.respuesta(res);
         },
         err => { console.log('ERROR DE API -> ' + JSON.stringify(err)) }
@@ -64,7 +76,9 @@ export class LoginComponent implements OnInit {
         }
       });
     }
+    
     //localStorage.setItem('token', this.user.usuario.trim());
+    //localStorage.setItem('token', 'PRUEBA-ABC');
     //this.router.navigate(['/principal']);
     //Swal.fire('Bienvenido! ');
   }
